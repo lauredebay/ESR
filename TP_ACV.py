@@ -36,8 +36,14 @@ if uploaded_file is not None:
         df = pd.read_excel(uploaded_file, sheet_name='batiments', header=[0, 1])  # lecture de l'onglet 'batiments' avec les deux premières lignes comme en-têtes
         df.columns = df.columns.droplevel(0)
       # lecture de l'onglet 'batiments'
+    except ImportError:
+        st.error("openpyxl n'est pas installé. Installez-le avec `pip install openpyxl` ou ajoutez-le à votre environnement.")
+        df = None
     except ValueError:
         st.error("La feuille 'batiments' est introuvable dans le fichier Excel.")
+        df = None
+    except Exception as e:
+        st.error(f"Erreur lors de la lecture du fichier Excel : {e}")
         df = None
     if df is not None:
 
