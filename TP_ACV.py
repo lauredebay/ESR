@@ -14,8 +14,15 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import time 
+
+# plotly is optional; fallback to Streamlit charts if unavailable
+try:
+    import plotly.express as px
+    plotly_available = True
+except ImportError:
+    plotly_available = False
+
 
 #STEP 2 : présentation de l'application
 st.title("Analyse ACV - E+C-")
@@ -45,8 +52,12 @@ if uploaded_file is not None:
                 x_col = st.selectbox("Sélectionnez une colonne pour l'axe des x", x_candidates)
                 df_plot = df[[x_col, 'eges']].copy()  # sélection de la colonne x et de 'eges', suppression des lignes avec NaN
                 df_plot = df_plot.dropna(subset=[x_col, 'eges'])
-                fig = px.scatter(df_plot, x=x_col, y='eges', title="Nuage de points des émissions de gaz à effet de serre (eges)")
-                st.plotly_chart(fig, use_container_width=True)
+                if plotly_available:
+                    fig = px.scatter(df_plot, x=x_col, y='eges', title="Nuage de points des émissions de gaz à effet de serre (eges)")
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("Plotly n'est pas installé. Affichage d'un graphique Streamlit à la place.")
+                    st.line_chart(df_plot.set_index(x_col)['eges'])
             else:
                 st.warning("Aucune colonne disponible pour l'axe des x.")
         else:
