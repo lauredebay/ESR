@@ -1,0 +1,19 @@
+# Generated from environment.yml 
+
+# Python version in environment.yml 
+
+#conda create -- Lanfranchi ESTP4 -- file requirements.txt python=3
+
+# conda activate ESTP4
+ 
+streamlit==1.57.0
+numpy==2.4.3
+pandas==3.0.2
+matplotlib==3.10.9
+seaborn==0.13.2
+scikit-learn==1.8.0
+plotly # Required for interactive visualizations 
+openpyxl # Required for Excel file support 
+ipykernel # Required for Jupyter Notebook support 
+
+ 
